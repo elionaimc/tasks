@@ -56,12 +56,17 @@
       <p>
         Utilize o botão para adicionar uma tarefa ou interaja com as tarefas listadas para editar seu conteúdo.
       </p>
+      <p>Filtrar tasks:</p>
+      <p>
+        <mat-slide-toggle [(ngModel)]="showPending"> Pendentes &nbsp; &nbsp; </mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="showFinished"> Finalizadas </mat-slide-toggle>
+      </p>
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div class="right-side">
       <div class="pill-group">
         @for (task of taskService.tasksSignal(); track task; let idx = $index) {
-          <mat-card appearance="outlined" [class]="(task.finished) ? 'pill finished' : 'pill'">
+          <mat-card appearance="outlined" [class]="(task.finished) ? 'pill finished' : 'pill'" *ngIf="filter(idx)">
             <mat-card-content>
               <span>{{ task.title }}</span>
               <span class="spacer"></span>

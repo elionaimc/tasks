@@ -27,4 +27,16 @@ To start a local development server, run:
 ng serve -o
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`.
+Once the server is running, open your browser and navigate to [http://localhost:4200/](http://localhost:4200/).
+
+This project supports Server Side Rendering (SSR). To interact with SSR version,run:
+
+```bash
+# build the project
+ng build
+
+#  start a local development server
+npm run serve:ssr
+```
+
+Once the server is running, open your browser and navigate to [http://localhost:4000/](http://localhost:4000/).

@@ -12,18 +12,25 @@ import { Task } from './shared/task.dto';
 import { ConfirmDelete } from './shared/confirm-delete.decorator';
 import { setAppInjector } from './app.config';
 import { CustomDatePipe } from './shared/custom-date.pipe';
-import { MatDialog } from '@angular/material/dialog';
+import { Dialog, DialogModule } from '@angular/cdk/dialog';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CreateDialogComponent } from './shared/components/create-dialog/create-dialog.component';
+import { FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
+    FormsModule,
     MatButtonModule,
     MatDividerModule,
     MatIconModule,
     MatCardModule,
-    CustomDatePipe
+    DialogModule,
+    CustomDatePipe,
+    MatSlideToggleModule,
+    NgIf
   ],
   providers: [
     CustomDatePipe
@@ -34,7 +41,9 @@ import { CreateDialogComponent } from './shared/components/create-dialog/create-
 export class AppComponent implements OnDestroy {
   destroyed = new Subject<void>();
   isSmallScreen = false;
-  readonly dialog = inject(MatDialog);
+  dialog = inject(Dialog);
+  showPending = true;
+  showFinished = true;
 
   constructor(
     public taskService: TasksService,
@@ -49,15 +58,11 @@ export class AppComponent implements OnDestroy {
     setAppInjector(this.injector);
   }
 
-  createTask() {
-    const dialogRef = this.dialog.open(CreateDialogComponent, {
+  createTask(): void {
+    this.dialog.open<string>(CreateDialogComponent, {
       minWidth: (this.isSmallScreen) ? '340px' : '790px',
       maxWidth: (this.isSmallScreen) ? '340px' : '790px',
       minHeight: '350px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'created') this.taskService.loadTasks();
     });
   }
 
@@ -67,12 +72,16 @@ export class AppComponent implements OnDestroy {
   }
 
   @ConfirmDelete('Certeza que deseja excluir')
-  deleteTask(idx: number) {
+  deleteTask(idx: number): void {
     this.taskService.delete(idx);
   }
 
-  editStatusTask(idx: number) {
+  editStatusTask(idx: number): void {
     this.taskService.editStatus(idx);
+  }
+
+  filter(idx: number) {
+    return this.taskService.tasksSignal()![idx].finished ? this.showFinished : this.showPending;
   }
 
   ngOnDestroy() {

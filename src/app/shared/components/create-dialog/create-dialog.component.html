@@ -1,7 +1,7 @@
-<mat-card style="min-height: 350px;">
+<mat-card>
     <mat-card-content>
         <mat-form-field
-        style="width: 100%; margin-bottom: 15px">
+        style="width: 100%; margin-bottom: -5px">
             <mat-label>Título</mat-label>
             <input
               matInput
@@ -15,7 +15,7 @@
             }
         </mat-form-field>
         <mat-form-field
-        style="width: 100%; margin-bottom: 15px">
+        style="width: 100%; margin-bottom: -10px">
             <mat-label>Descrição</mat-label>
             <textarea
                 matInput
@@ -28,16 +28,17 @@
               <mat-error>{{descriptionErrorMessage()}}</mat-error>
             }
         </mat-form-field>
+        <p><mat-slide-toggle [(ngModel)]="finished"> Finalizada? </mat-slide-toggle></p>
     </mat-card-content>
-    <mat-dialog-actions align="end">
+    <mat-card-actions align="end">
         <button
             mat-button
-            mat-dialog-close
-            cdkFocusRegionstart>
+            cdkFocusRegionstart
+            (click)="dialogRef.close()">
             <mat-icon>close</mat-icon> CANCELAR
-        </button>
+        </button> &nbsp; &nbsp; 
         <button mat-flat-button [disabled]="!title.valid || !description.valid" (click)="create()">
             <mat-icon>save</mat-icon> SALVAR
         </button>
-    </mat-dialog-actions>
+    </mat-card-actions>
 </mat-card>

@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,13 +6,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogRef
-} from '@angular/material/dialog';
+import { DialogRef } from '@angular/cdk/dialog';
 import { merge } from 'rxjs';
 import { TasksService } from '../../services/tasks.service';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-create-dialog',
@@ -24,10 +21,9 @@ import { TasksService } from '../../services/tasks.service';
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
-    MatDialogActions,
-    MatDialogClose,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatSlideToggleModule
   ],
   templateUrl: './create-dialog.component.html',
   styleUrl: './create-dialog.component.scss'
@@ -37,9 +33,10 @@ export class CreateDialogComponent {
   readonly description = new FormControl('', [Validators.required]);
   descriptionErrorMessage = signal('');
   titleErrorMessage = signal('');
+  dialogRef = inject(DialogRef);
+  finished = false;
 
   constructor(
-    public dialogRef: MatDialogRef<CreateDialogComponent>,
     private taskService: TasksService
   ) {
     merge(this.title.statusChanges, this.title.valueChanges)
@@ -72,7 +69,7 @@ export class CreateDialogComponent {
       description: this.description.value!,
       created_at: new Date(),
       edited_at: new Date(),
-      finished: false
+      finished: this.finished
     });
     this.dialogRef.close();
   }
