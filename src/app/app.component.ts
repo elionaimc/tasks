@@ -17,6 +17,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CreateDialogComponent } from './shared/components/create-dialog/create-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
+import { EditDialogComponent } from './shared/components/edit-dialog/edit-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -67,8 +68,12 @@ export class AppComponent implements OnDestroy {
   }
 
   editTask(task: Task, idx: number) {
-    console.log(task)
-    // todo
+    this.dialog.open<string>(EditDialogComponent, {
+      minWidth: (this.isSmallScreen) ? '340px' : '790px',
+      maxWidth: (this.isSmallScreen) ? '340px' : '790px',
+      minHeight: '350px',
+      data: { ...task, idx }
+    });
   }
 
   @ConfirmDelete('Certeza que deseja excluir')

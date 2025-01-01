@@ -46,6 +46,13 @@ export class TasksService {
     this.storageService.save(this.DB, JSON.stringify(this.tasksSignal()));
   }
 
+  edit(task: Task, idx: number) {
+    let tasks = this.tasksSignal()!;
+    tasks[idx] = task;
+    this.tasksSignal.set(tasks);
+    this.storageService.save(this.DB, JSON.stringify(this.tasksSignal()));
+  }
+
   delete(idx: number) {
     this.tasksSignal()!.splice(idx, 1);
     this.storageService.save(this.DB, JSON.stringify(this.tasksSignal()));

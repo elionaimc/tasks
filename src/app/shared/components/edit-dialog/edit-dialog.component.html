@@ -29,6 +29,8 @@
             }
         </mat-form-field>
         <p><mat-slide-toggle [(ngModel)]="finished"> Finalizada? </mat-slide-toggle></p>
+        <button mat-button disabled><mat-icon>event_available</mat-icon> {{ data.created_at | customDate }}</button>
+        <button mat-button disabled><mat-icon>edit</mat-icon> {{ data.edited_at | customDate }}</button>
     </mat-card-content>
     <mat-card-actions align="end">
         <button
@@ -37,7 +39,7 @@
             (click)="dialogRef.close()">
             <mat-icon>close</mat-icon> CANCELAR
         </button> &nbsp; &nbsp; 
-        <button mat-flat-button [disabled]="!title.valid || !description.valid" (click)="create()">
+        <button mat-flat-button [disabled]="!title.valid || !description.valid" (click)="edit()">
             <mat-icon>save</mat-icon> SALVAR
         </button>
     </mat-card-actions>

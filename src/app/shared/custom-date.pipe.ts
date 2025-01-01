@@ -7,7 +7,7 @@ export class CustomDatePipe implements PipeTransform {
 
   transform(value: Date): string {
     value = new Date(value);
-    return '☉ ' + value.toLocaleString();
+    return value.toLocaleString();
   }
 
 }
