@@ -1,35 +1,35 @@
 # Tasks
 
-Frontend only task manager app using Angular framework.
+Gerenciador de tarefas utilizando o framework Angular
 
-## Development server
+## Servidor de desenvolvimento
 
-Before you run this web app, you need to install dependencies using your terminal
+Antes de executar esse projeto, você deve instalar as dependências usando seu terminal
 
 ```bash
 # using npm as project manager
 npm install
 ```
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6 and has the following library dependencies:
+Este projeto foi criado utilizando o framework [Angular CLI](https://github.com/angular/angular-cli) versão 19.0.6 e depende das seguintes bibliotecas:
 
 - [Angular Material](https://material.angular.io/)
-    - Common stylling and themming
-    - Visual components and animation
+    - Estilização geral e tema dos componentes
+    - Componentes visuais e animação
 - [Capacitor](https://capacitorjs.com/)
-    - Local storage support (platform agnostic) and other plugins
-    - Native builds (not used)
+    - Suporte a local storage (platform-agnostic) e outras libs
+    - Native builds (não utilizado)
 
-To start a local development server, run:
+Para iniciar o servidor local de desenvolvimento, execute:
 
 ```bash
 # parameter -o is a flag to programmatically open web browser and navigate to project URL
 ng serve -o
 ```
 
-Once the server is running, open your browser and navigate to [http://localhost:4200/](http://localhost:4200/).
+Uma vez que o servidor esteja rodando, abra seu navegador e navegue para [http://localhost:4200/](http://localhost:4200/).
 
-This project supports Server Side Rendering (SSR). To interact with SSR version,run:
+Este projeto suporta SSR (Server Side Rendering). Para interagir com a versão SSR, execute:
 
 ```bash
 # build the project
@@ -39,7 +39,7 @@ ng build
 npm run serve:ssr
 ```
 
-Once the server is running, open your browser and navigate to [http://localhost:4000/](http://localhost:4000/).
+Uma vez que o servidor esteja rodando, abra seu navegador e navegue para [http://localhost:4000/](http://localhost:4000/).
 
 ## Requisitos Funcionais
 
