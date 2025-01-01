@@ -1,0 +1,14 @@
+<div>
+  <h2 mat-dialog-title class="danger">
+    <mat-icon style="margin-bottom: -5px !important;">warning_amber</mat-icon>
+    {{ data.label }}?
+  </h2>
+  <mat-dialog-actions align="end">
+    <button mat-flat-button mat-dialog-close>
+      <mat-icon>close</mat-icon> CANCELAR
+    </button>&nbsp;
+    <button mat-flat-button style="background-color: oklch(95.88% 0.0419 15.34); color: red" [mat-dialog-close]="true">
+      <mat-icon>delete_outline</mat-icon> EXCLUIR
+    </button>
+  </mat-dialog-actions>
+</div>
