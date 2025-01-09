@@ -56,26 +56,54 @@
       <p>
         Utilize o botão para adicionar uma tarefa ou interaja com as tarefas listadas para editar seu conteúdo.
       </p>
-      <p>Filtrar tasks:</p>
-      <p>
-        <mat-slide-toggle [(ngModel)]="showPending"> Pendentes &nbsp; &nbsp; </mat-slide-toggle>
-        <mat-slide-toggle [(ngModel)]="showFinished"> Finalizadas </mat-slide-toggle>
+      <p><strong>Filtrar:</strong><br/>
+        <mat-slide-toggle [(ngModel)]="showPending" class="pt-8"> Pendentes &nbsp; </mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="showFinished" class="pt-8"> Concluídas </mat-slide-toggle>
       </p>
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div class="right-side">
-      <div class="pill-group">
+      <div>
         @for (task of taskService.tasksSignal(); track task; let idx = $index) {
-          <mat-card appearance="outlined" [class]="(task.finished) ? 'pill finished' : 'pill'" *ngIf="filter(idx)">
-            <mat-card-content>
-              <span>{{ task.title }}</span>
-              <span class="spacer"></span>
-              <span class="gray">{{ task.edited_at | customDate }} &nbsp; </span>
-              &nbsp; <mat-icon (click)="editStatusTask(idx)" [class]="(task.finished) ? 'pointer success' : 'pointer dark-gray'">done_all</mat-icon>
-             @if (!task.finished) { &nbsp; <mat-icon (click)="editTask(task, idx)" class="pointer">edit</mat-icon>
-             &nbsp; <mat-icon (click)="deleteTask(idx)" class="danger pointer">delete</mat-icon> }
-            </mat-card-content>
-          </mat-card>
+          <mat-accordion style="min-width: 100%;" *ngIf="filter(idx)">
+            <mat-expansion-panel (opened)="changeState(idx, true)" (closed)="changeState(idx, false)" [class]="(task.finished) ? 'mat-elevation-z finished' : 'mat-elevation-z'">
+              <mat-expansion-panel-header [class]="(task.finished) ? 'finished' : ''">
+                <mat-panel-title [class]="(task.finished) ? 'light-gray line-through' : 'primary bolder'"> {{ task.title | customTitle }} </mat-panel-title>
+                  @if(!states[idx]) {
+                    @if(!isSmallScreen) {
+                      <span class="gray pt-8 small">{{ task.edited_at | customDate }} &nbsp; </span>
+                      &nbsp; 
+                    }
+                    <button mat-icon-button (click)="editStatusTask(idx, $event)">
+                      <mat-icon [class]="(task.finished) ? 'success' : 'light-gray'">done_all</mat-icon>
+                    </button> &nbsp;  &nbsp;  &nbsp; 
+                  }
+                </mat-expansion-panel-header>
+                <span [class]="(task.finished) ? 'mt-13 pl-13 light-gray' : 'mt-13 pl-13 dark-gray'">{{ task.description }}</span>
+                <br/>
+                @if (!task.finished) {
+                  <button mat-button disabled><mat-icon>event_available</mat-icon> {{ task.created_at | customDate }}</button>
+                  <button mat-button disabled><mat-icon>edit</mat-icon> {{ task.edited_at | customDate }}</button>
+                } @else {
+                  <button mat-button disabled><mat-icon>done_all</mat-icon> {{ task.edited_at | customDate }}</button>
+                }
+                <mat-action-row>
+                  @if (!task.finished) {
+                    <button mat-icon-button (click)="editTask(task, idx)" class="dark-gray">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  }
+                  @if(states[idx]) {
+                    <button mat-icon-button (click)="editStatusTask(idx, $event)" >
+                      <mat-icon [class]="(task.finished) ? 'gray' : 'dark-gray'">done_all</mat-icon>
+                    </button> 
+                  } 
+                  <button mat-icon-button (click)="deleteTask(idx)">
+                    <mat-icon [class]="(task.finished) ? 'gray' : 'danger'">delete_outline</mat-icon>
+                  </button>
+                </mat-action-row>
+            </mat-expansion-panel>
+          </mat-accordion>
         }
       </div>
     </div>

@@ -3,7 +3,7 @@ import { filter, tap } from 'rxjs/operators';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { AppInjector } from '../app.config';
 
-export function ConfirmDelete(label: string) {
+export function ConfirmDelete(label: string, message: string, button: string[]) {
   return (
     target: any,
     methodName: string,
@@ -15,7 +15,7 @@ export function ConfirmDelete(label: string) {
       AppInjector.get(MatDialog)?.open(DeleteDialogComponent, {
         panelClass: 'rounded-dialog',
         minWidth: '350px',
-        data: { label },
+        data: { label, message, button },
       })
         .afterClosed()
         .pipe(

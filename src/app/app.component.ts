@@ -8,7 +8,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { TasksService } from './shared/services/tasks.service';
-import { Task } from './shared/task.dto';
+import { Task } from './shared/dtos/task.dto';
 import { ConfirmDelete } from './shared/confirm-delete.decorator';
 import { setAppInjector } from './app.config';
 import { CustomDatePipe } from './shared/custom-date.pipe';
@@ -18,6 +18,9 @@ import { CreateDialogComponent } from './shared/components/create-dialog/create-
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { EditDialogComponent } from './shared/components/edit-dialog/edit-dialog.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { CustomTitlePipe } from './shared/custom-title.pipe';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
@@ -30,8 +33,10 @@ import { EditDialogComponent } from './shared/components/edit-dialog/edit-dialog
     MatCardModule,
     DialogModule,
     CustomDatePipe,
+    CustomTitlePipe,
     MatSlideToggleModule,
-    NgIf
+    NgIf,
+    MatExpansionModule
   ],
   providers: [
     CustomDatePipe
@@ -41,11 +46,12 @@ import { EditDialogComponent } from './shared/components/edit-dialog/edit-dialog
 })
 export class AppComponent implements OnDestroy {
   destroyed = new Subject<void>();
-  isSmallScreen = false;
   dialog = inject(Dialog);
+  isSmallScreen = false;
   showPending = true;
   showFinished = true;
-
+  states: boolean[] = [];
+  
   constructor(
     public taskService: TasksService,
     private injector: Injector
@@ -57,6 +63,10 @@ export class AppComponent implements OnDestroy {
       this.isSmallScreen = result.matches;
     });
     setAppInjector(this.injector);
+  }
+
+  changeState(idx: number, state: boolean) {
+    this.states[idx] = state;
   }
 
   createTask(): void {
@@ -76,12 +86,20 @@ export class AppComponent implements OnDestroy {
     });
   }
 
-  @ConfirmDelete('Certeza que deseja excluir')
+  @ConfirmDelete(
+    'Quer mesmo excluir?',
+    'Esta ação não poderá ser desfeita. Ao clicar em EXCLUIR, você confirma que deseja apagar todos os dados relacionados a esta tarefa.',
+    [
+      'delete_outline',
+      'EXCLUIR'
+    ]
+  )
   deleteTask(idx: number): void {
     this.taskService.delete(idx);
   }
 
-  editStatusTask(idx: number): void {
+  editStatusTask(idx: number, e: Event): void {
+    e.stopPropagation();
     this.taskService.editStatus(idx);
   }
 

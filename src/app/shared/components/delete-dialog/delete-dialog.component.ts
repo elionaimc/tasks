@@ -17,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatDialogTitle,
     MatDialogClose,
     MatButtonModule,
+    MatDialogContent,
     MatIconModule
 ],
   templateUrl: './delete-dialog.component.html',
